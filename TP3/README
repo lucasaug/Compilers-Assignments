@@ -1,0 +1,40 @@
+Trabalho Prático 3 - Implementação de um analisador sintático
+Lucas Augusto Freire de Oliveira
+2014106422
+
+O arquivo cool.y possui a definição na linguagem para gramáticas de bison da gramática
+necessária para o reconhecimento da linguagem Cool.
+
+Testes:
+
+* good.cl
+
+- Testa as construções que funcionam corretamente. Esse arquivo é uma combinação da biblioteca
+atoi.cl com o arquivo stack.cl desenvolvido no primeiro Trabalho Prático. É um arquivo bem completo
+que utiliza todas as construções legais da gramática, e além disso pode ter sua corretude testada
+facilmente, após compilado.
+
+* bad.cl
+
+- Esse arquivo testa as construções inválidas, garantindo que o compilador captura todos os erros.
+Para isso foram definidas várias classes, e métodos e atributos válidos e inválidos. Cada um dos
+erros é explicado com mais detalhe nos comentários do arquivo.
+ 
+Alguns erros capturados:
+
+* Erros nas classes, após encontrar um erro desses avançamos para a próxima classe definida
+  corretamente:
+
+- Erros dentro da definição das classes (conteúdo dentro dos parênteses totalmente inválidos)
+- Erro na assinatura da classe (nome da classe e da classe-pai)
+
+* Erros dentro das definições do conteúdo das classes, após encontrar um erro desses avançamos
+  para a próxima definição correta dentro da classe (próximo método ou atributo):
+
+- Métodos definidos incorretamente
+- Atributos definidos incorretamente
+
+* Erros no let:
+
+- Toda a definição de variáveis incorreta (nesse caso avançamos para o conteúdo após a palavra IN)
+- Uma variável definida incorretamente (nesse caso avançamos para a próxima variável)

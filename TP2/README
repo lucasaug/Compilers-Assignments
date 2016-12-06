@@ -1,0 +1,29 @@
+Trabalho Prático 2 - Implementação de um analisador léxico
+Lucas Augusto Freire de Oliveira
+2014106422
+
+O arquivo cool.flex possui o trabalho feito, com comentários para que a leitura
+seja mais clara. Foi definida uma macro que insere um caracter na string sendo
+lida atualmente (quando estamos lendo um literal de string do programa).
+Definimos uma regra SINGLECHAR que abrange todos os operadores de um caracter da
+linguagem, para tornar o programa mais simples.
+
+Algumas observações:
+- O programa armazena inteiros como strings. Dessa forma, o inteiro 0001 será lido
+  pelo lexer como "0001", e não como "1", que também seria uma representação possível.
+  Esse inteiro passará por um parsing durante a próxima etapa, portanto isso não causa
+  nenhum mal-funcionamento do compilador.
+- Se uma string de várias linhas possui um fim de linha não escapado, o lexer avisa
+  que houve um erro, mas supõe que o programador apenas se esqueceu de escapar esse
+  fim de linha. Dessa forma, o lexer continua a ler a string, inserindo o \n nesse
+  local, conforme ocorreria se o fim de linha tivesse sido escapado. Essa string não
+  é descartada.
+- Ao utilizar o Makefile, recebi um erro relativo à flag -R utilizada. Para contornar
+  isso, criei um Makefix conforme mencionado por um colega de sala no fórum. Isso
+  resolveu o problema para mim, mas não sei se vai causar algum problema no momento
+  da avaliação. Obtive esse erro mesmo executando na máquina doce.grad.
+
+O arquivo test.cl possui alguns testes. Existem vários erros nesse programa, logo ele
+não será compilado com sucesso. A ideia é ver quais erros o lexer gera, e garantir que
+estejam corretos. Além disso, podemos também conferir que o lexer gera os tokens corretos
+para as partes válidas do programa.
