@@ -10,43 +10,7 @@
 
 
 #include "tree.h"
-#include <symtab.h>
 #include "cool-tree.handcode.h"
-
-#include <string>
-
-
-// We moved the ClassTable definition here, it was the only
-// way to keep the linker from complaining
-class ClassTable {
-private:
-  int semant_errors;
-  void install_basic_classes();
-  ostream& error_stream;
-  Classes classList;
-
-public:
-  ClassTable(Classes);
-  int errors() { return semant_errors; }
-  ostream& semant_error();
-  ostream& semant_error(Class_ c);
-  ostream& semant_error(Symbol filename, tree_node *t);
-
-  void semanticAnalysis();
-  int inheritsFrom(std::string, std::string);
-  Class__class* lookup(std::string);
-  Class__class* nearestCommonParent(std::string, std::string);
-  Feature_class* findMethod(std::string, std::string);
-};
-
-template <class SYM, class DAT>
-class SymbolTable;
-
-Formals nil_Formals();
-Features nil_Features();
-Expressions nil_Expressions();
-Cases nil_Cases();
-Expression no_expr();
 
 
 // define the class for phylum
@@ -75,12 +39,6 @@ public:
 #ifdef Class__EXTRAS
    Class__EXTRAS
 #endif
-
-   virtual Symbol get_name() { return (new Entry("", 0, 0)); }
-   virtual Symbol get_parent() { return (new Entry("", 0, 0)); }
-   virtual Features get_features() { return nil_Features(); }
-
-   virtual void semant(ClassTable& classes) { return; }
 };
 
 
@@ -92,20 +50,12 @@ public:
    tree_node *copy()		 { return copy_Feature(); }
    virtual Feature copy_Feature() = 0;
 
+   virtual Symbol getName() { return NULL; }
+   virtual int isMethod() { return 0; }
+
 #ifdef Feature_EXTRAS
    Feature_EXTRAS
 #endif
-
-   virtual Symbol get_name() { return (new Entry("", 0, 0)); }
-   virtual int isMethod() { return 0; }
-
-   virtual Formals get_formals() { return nil_Formals(); }
-   virtual Symbol get_ftype() { return (new Entry("", 0, 0)); }
-   virtual Expression get_expr() { return no_expr(); }
-   virtual Cases get_cases() { return nil_Cases(); }
-
-   virtual void semant(ClassTable& classes, SymbolTable<std::string, char*>& variables,
-                       Class__class* currentClass) { return; }
 };
 
 
@@ -120,9 +70,6 @@ public:
 #ifdef Formal_EXTRAS
    Formal_EXTRAS
 #endif
-
-   virtual Symbol get_name() { return (new Entry("", 0, 0)); }
-   virtual Symbol get_type_decl() { return (new Entry("", 0, 0)); }
 };
 
 
@@ -137,20 +84,6 @@ public:
 #ifdef Expression_EXTRAS
    Expression_EXTRAS
 #endif
-
-   virtual Symbol get_name() { return (new Entry("", 0, 0)); }
-   virtual Expression get_expr() { return this; }
-   virtual Expression get_pred() { return this; }
-   virtual Expression get_then_exp() { return this; }
-   virtual Expression get_else_exp() { return this; }
-   virtual Expression get_body() { return no_expr(); }
-   virtual Expressions get_sbody() { return nil_Expressions(); }
-   virtual Symbol get_identifier() { return (new Entry("", 0, 0)); }
-   virtual Symbol get_type_decl() { return (new Entry("", 0, 0)); }
-   virtual Expression get_init() { return this; }
-
-   virtual int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*) { return 1; }
 };
 
 
@@ -165,14 +98,6 @@ public:
 #ifdef Case_EXTRAS
    Case_EXTRAS
 #endif
-
-   virtual Symbol get_name() { return (new Entry("", 0, 0)); }
-   virtual Symbol get_type_decl() { return (new Entry("", 0, 0)); }
-   virtual Expression get_expr() { return no_expr(); }
-
-
-   virtual void semant(ClassTable& classes, SymbolTable<std::string, char*>& variables,
-               Class__class* currentClass) { return; }
 };
 
 
@@ -205,7 +130,7 @@ typedef Cases_class *Cases;
 // define the class for constructors
 // define constructor - program
 class program_class : public Program_class {
-protected:
+public:
    Classes classes;
 public:
    program_class(Classes a1) {
@@ -225,7 +150,7 @@ public:
 
 // define constructor - class_
 class class__class : public Class__class {
-protected:
+public:
    Symbol name;
    Symbol parent;
    Features features;
@@ -246,19 +171,12 @@ public:
 #ifdef class__EXTRAS
    class__EXTRAS
 #endif
-
-   // Changes to the class__class entity to allow reading its properties
-   Symbol get_name() { return name; }
-   Symbol get_parent() { return parent; }
-   Features get_features() { return features; }
-
-   void semant(ClassTable&);
 };
 
 
 // define constructor - method
 class method_class : public Feature_class {
-protected:
+public:
    Symbol name;
    Formals formals;
    Symbol return_type;
@@ -273,28 +191,21 @@ public:
    Feature copy_Feature();
    void dump(ostream& stream, int n);
 
+   virtual Symbol getName() { return name; }
+   virtual int isMethod() { return 1; }
+
 #ifdef Feature_SHARED_EXTRAS
    Feature_SHARED_EXTRAS
 #endif
 #ifdef method_EXTRAS
    method_EXTRAS
 #endif
-
-   Symbol get_name() { return name; }
-   int isMethod() { return 1; }
-
-   Formals get_formals() { return formals; }
-   Symbol get_ftype() { return return_type; }
-   Expression get_expr() { return expr; }
-
-   void semant(ClassTable&, SymbolTable<std::string, char*>&,
-                       Class__class*);
 };
 
 
 // define constructor - attr
 class attr_class : public Feature_class {
-protected:
+public:
    Symbol name;
    Symbol type_decl;
    Expression init;
@@ -307,28 +218,20 @@ public:
    Feature copy_Feature();
    void dump(ostream& stream, int n);
 
+   virtual Symbol getName() { return name; }
+
 #ifdef Feature_SHARED_EXTRAS
    Feature_SHARED_EXTRAS
 #endif
 #ifdef attr_EXTRAS
    attr_EXTRAS
 #endif
-
-   Symbol get_name() { return name; }
-   int isMethod() { return 0; }
-
-   Formals get_formals() { return NULL; }
-   Symbol get_ftype() { return type_decl; }
-   Expression get_expr() { return init; }
-
-   void semant(ClassTable&, SymbolTable<std::string, char*>&,
-                       Class__class*);
 };
 
 
 // define constructor - formal
 class formal_class : public Formal_class {
-protected:
+public:
    Symbol name;
    Symbol type_decl;
 public:
@@ -345,15 +248,12 @@ public:
 #ifdef formal_EXTRAS
    formal_EXTRAS
 #endif
-
-   Symbol get_name() { return name; }
-   Symbol get_type_decl() { return type_decl; }
 };
 
 
 // define constructor - branch
 class branch_class : public Case_class {
-protected:
+public:
    Symbol name;
    Symbol type_decl;
    Expression expr;
@@ -372,19 +272,12 @@ public:
 #ifdef branch_EXTRAS
    branch_EXTRAS
 #endif
-
-   Symbol get_name() { return name; }
-   Symbol get_type_decl() { return type_decl; }
-   Expression get_expr() { return expr; }
-
-   void semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - assign
 class assign_class : public Expression_class {
-protected:
+public:
    Symbol name;
    Expression expr;
 public:
@@ -401,19 +294,12 @@ public:
 #ifdef assign_EXTRAS
    assign_EXTRAS
 #endif
-
-
-   Symbol get_name() { return name; }
-   Expression get_expr() { return expr; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - static_dispatch
 class static_dispatch_class : public Expression_class {
-protected:
+public:
    Expression expr;
    Symbol type_name;
    Symbol name;
@@ -434,16 +320,12 @@ public:
 #ifdef static_dispatch_EXTRAS
    static_dispatch_EXTRAS
 #endif
-
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - dispatch
 class dispatch_class : public Expression_class {
-protected:
+public:
    Expression expr;
    Symbol name;
    Expressions actual;
@@ -462,16 +344,12 @@ public:
 #ifdef dispatch_EXTRAS
    dispatch_EXTRAS
 #endif
-
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - cond
 class cond_class : public Expression_class {
-protected:
+public:
    Expression pred;
    Expression then_exp;
    Expression else_exp;
@@ -490,20 +368,12 @@ public:
 #ifdef cond_EXTRAS
    cond_EXTRAS
 #endif
-
-
-   Expression get_pred() { return pred; }
-   Expression get_then_exp() { return then_exp; }
-   Expression get_else_exp() { return else_exp; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - loop
 class loop_class : public Expression_class {
-protected:
+public:
    Expression pred;
    Expression body;
 public:
@@ -520,19 +390,12 @@ public:
 #ifdef loop_EXTRAS
    loop_EXTRAS
 #endif
-
-
-   Expression get_pred() { return pred; }
-   Expression get_body() { return body; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - typcase
 class typcase_class : public Expression_class {
-protected:
+public:
    Expression expr;
    Cases cases;
 public:
@@ -549,19 +412,12 @@ public:
 #ifdef typcase_EXTRAS
    typcase_EXTRAS
 #endif
-
-
-   Expression get_expr() { return expr; }
-   Cases get_cases() { return cases; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - block
 class block_class : public Expression_class {
-protected:
+public:
    Expressions body;
 public:
    block_class(Expressions a1) {
@@ -576,17 +432,12 @@ public:
 #ifdef block_EXTRAS
    block_EXTRAS
 #endif
-
-   Expressions get_sbody() { return body; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - let
 class let_class : public Expression_class {
-protected:
+public:
    Symbol identifier;
    Symbol type_decl;
    Expression init;
@@ -607,21 +458,12 @@ public:
 #ifdef let_EXTRAS
    let_EXTRAS
 #endif
-
-
-   Symbol get_identifier() { return identifier; }
-   Symbol get_type_decl() { return type_decl; }
-   Expression get_init() { return init; }
-   Expression get_body() { return body; }
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - plus
 class plus_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -638,15 +480,12 @@ public:
 #ifdef plus_EXTRAS
    plus_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - sub
 class sub_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -663,15 +502,12 @@ public:
 #ifdef sub_EXTRAS
    sub_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - mul
 class mul_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -688,15 +524,12 @@ public:
 #ifdef mul_EXTRAS
    mul_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - divide
 class divide_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -713,15 +546,12 @@ public:
 #ifdef divide_EXTRAS
    divide_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - neg
 class neg_class : public Expression_class {
-protected:
+public:
    Expression e1;
 public:
    neg_class(Expression a1) {
@@ -736,15 +566,12 @@ public:
 #ifdef neg_EXTRAS
    neg_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - lt
 class lt_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -761,15 +588,12 @@ public:
 #ifdef lt_EXTRAS
    lt_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - eq
 class eq_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -786,15 +610,12 @@ public:
 #ifdef eq_EXTRAS
    eq_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - leq
 class leq_class : public Expression_class {
-protected:
+public:
    Expression e1;
    Expression e2;
 public:
@@ -811,15 +632,12 @@ public:
 #ifdef leq_EXTRAS
    leq_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - comp
 class comp_class : public Expression_class {
-protected:
+public:
    Expression e1;
 public:
    comp_class(Expression a1) {
@@ -834,15 +652,12 @@ public:
 #ifdef comp_EXTRAS
    comp_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - int_const
 class int_const_class : public Expression_class {
-protected:
+public:
    Symbol token;
 public:
    int_const_class(Symbol a1) {
@@ -857,15 +672,12 @@ public:
 #ifdef int_const_EXTRAS
    int_const_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - bool_const
 class bool_const_class : public Expression_class {
-protected:
+public:
    Boolean val;
 public:
    bool_const_class(Boolean a1) {
@@ -880,15 +692,12 @@ public:
 #ifdef bool_const_EXTRAS
    bool_const_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - string_const
 class string_const_class : public Expression_class {
-protected:
+public:
    Symbol token;
 public:
    string_const_class(Symbol a1) {
@@ -903,15 +712,12 @@ public:
 #ifdef string_const_EXTRAS
    string_const_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - new_
 class new__class : public Expression_class {
-protected:
+public:
    Symbol type_name;
 public:
    new__class(Symbol a1) {
@@ -926,15 +732,12 @@ public:
 #ifdef new__EXTRAS
    new__EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - isvoid
 class isvoid_class : public Expression_class {
-protected:
+public:
    Expression e1;
 public:
    isvoid_class(Expression a1) {
@@ -949,15 +752,12 @@ public:
 #ifdef isvoid_EXTRAS
    isvoid_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - no_expr
 class no_expr_class : public Expression_class {
-protected:
+public:
 public:
    no_expr_class() {
    }
@@ -970,15 +770,12 @@ public:
 #ifdef no_expr_EXTRAS
    no_expr_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 
 // define constructor - object
 class object_class : public Expression_class {
-protected:
+public:
    Symbol name;
 public:
    object_class(Symbol a1) {
@@ -993,9 +790,6 @@ public:
 #ifdef object_EXTRAS
    object_EXTRAS
 #endif
-
-   int semant(ClassTable&, SymbolTable<std::string, char*>&,
-               Class__class*);
 };
 
 

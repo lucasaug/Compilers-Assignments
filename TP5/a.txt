@@ -1,0 +1,204 @@
+g++ -g -Wall -Wno-unused -I. -I/home/prof/renato/cool/student/include/PA5 -I/home/prof/renato/cool/student/src/PA5 -DDEBUG -c cgen.cc
+cgen.cc: In function ‘void initialize_constants()’:
+cgen.cc:78:41: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   arg         = idtable.add_string("arg");
+                                         ^
+cgen.cc:79:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   arg2        = idtable.add_string("arg2");
+                                          ^
+cgen.cc:80:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Bool        = idtable.add_string("Bool");
+                                          ^
+cgen.cc:81:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   concat      = idtable.add_string("concat");
+                                            ^
+cgen.cc:82:43: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   cool_abort  = idtable.add_string("abort");
+                                           ^
+cgen.cc:83:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   copy        = idtable.add_string("copy");
+                                          ^
+cgen.cc:84:41: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Int         = idtable.add_string("Int");
+                                         ^
+cgen.cc:85:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   in_int      = idtable.add_string("in_int");
+                                            ^
+cgen.cc:86:47: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   in_string   = idtable.add_string("in_string");
+                                               ^
+cgen.cc:87:40: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   IO          = idtable.add_string("IO");
+                                        ^
+cgen.cc:88:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   length      = idtable.add_string("length");
+                                            ^
+cgen.cc:89:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Main        = idtable.add_string("Main");
+                                          ^
+cgen.cc:90:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   main_meth   = idtable.add_string("main");
+                                          ^
+cgen.cc:93:47: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   No_class    = idtable.add_string("_no_class");
+                                               ^
+cgen.cc:94:46: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   No_type     = idtable.add_string("_no_type");
+                                              ^
+cgen.cc:95:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Object      = idtable.add_string("Object");
+                                            ^
+cgen.cc:96:45: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   out_int     = idtable.add_string("out_int");
+                                             ^
+cgen.cc:97:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   out_string  = idtable.add_string("out_string");
+                                                ^
+cgen.cc:98:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   prim_slot   = idtable.add_string("_prim_slot");
+                                                ^
+cgen.cc:99:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   self        = idtable.add_string("self");
+                                          ^
+cgen.cc:100:47: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   SELF_TYPE   = idtable.add_string("SELF_TYPE");
+                                               ^
+cgen.cc:101:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Str         = idtable.add_string("String");
+                                            ^
+cgen.cc:102:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   str_field   = idtable.add_string("_str_field");
+                                                ^
+cgen.cc:103:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   substr      = idtable.add_string("substr");
+                                            ^
+cgen.cc:104:47: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   type_name   = idtable.add_string("type_name");
+                                               ^
+cgen.cc:105:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   val         = idtable.add_string("_val");
+                                          ^
+cgen.cc: At global scope:
+cgen.cc:109:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   { "_NoGC_Init", "_GenGC_Init", "_ScnGC_Init" };
+                                                ^
+cgen.cc:109:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:109:48: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:111:57: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   { "_NoGC_Collect", "_GenGC_Collect", "_ScnGC_Collect" };
+                                                         ^
+cgen.cc:111:57: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:111:57: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc: In function ‘void emit_push(char*, std::ostream&)’:
+cgen.cc:321:26: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_store(reg,0,SP,str);
+                          ^
+cgen.cc:322:26: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_addiu(SP,SP,-4,str);
+                          ^
+cgen.cc:322:26: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc: In function ‘void emit_test_collector(std::ostream&)’:
+cgen.cc:343:19: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_push(ACC, s);
+                   ^
+cgen.cc:344:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_move(ACC, SP, s); // stack end
+                       ^
+cgen.cc:344:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:345:24: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_move(A1, ZERO, s); // allocate nothing
+                        ^
+cgen.cc:345:24: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:347:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_addiu(SP,SP,4,s);
+                       ^
+cgen.cc:347:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+cgen.cc:348:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_load(ACC,0,SP,s);
+                       ^
+cgen.cc:348:23: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+In file included from cgen.h:3:0,
+                 from cgen.cc:25:
+cgen.cc: In function ‘void emit_gc_check(char*, std::ostream&)’:
+emit.h:69:14: warning: comparison with string literal results in unspecified behaviour [-Waddress]
+ #define A1   "$a1"  // For arguments to prim funcs 
+              ^
+cgen.cc:353:17: note: in expansion of macro ‘A1’
+   if (source != A1) emit_move(A1, source, s);
+                 ^
+cgen.cc:353:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   if (source != A1) emit_move(A1, source, s);
+                                            ^
+cgen.cc: In member function ‘void CgenClassTable::code_global_text()’:
+cgen.cc:551:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_init_ref(idtable.add_string("Main"), str);
+                                          ^
+cgen.cc:553:41: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_init_ref(idtable.add_string("Int"),str);
+                                         ^
+cgen.cc:555:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_init_ref(idtable.add_string("String"),str);
+                                            ^
+cgen.cc:557:42: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_init_ref(idtable.add_string("Bool"),str);
+                                          ^
+cgen.cc:559:44: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_method_ref(idtable.add_string("Main"), idtable.add_string("main"), str);
+                                            ^
+cgen.cc:559:72: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_method_ref(idtable.add_string("Main"), idtable.add_string("main"), str);
+                                                                        ^
+cgen.cc: In member function ‘void CgenClassTable::code_constants()’:
+cgen.cc:604:28: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   stringtable.add_string("");
+                            ^
+cgen.cc:605:26: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   inttable.add_string("0");
+                          ^
+cgen.cc: In member function ‘void CgenClassTable::install_basic_classes()’:
+cgen.cc:634:59: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   Symbol filename = stringtable.add_string("<basic class>");
+                                                           ^
+cgen.cc: In member function ‘void CgenNode::emit_dispatch_table(std::ostream&)’:
+cgen.cc:818:30: error: ‘class Feature_class’ has no member named ‘name’
+     emit_method_ref(name, f->name, s);
+                              ^
+cgen.cc: In member function ‘void CgenClassTable::code()’:
+cgen.cc:865:28: error: no matching function for call to ‘CgenNode::emit_dispatch_table()’
+     n->emit_dispatch_table();
+                            ^
+cgen.cc:865:28: note: candidate is:
+cgen.cc:812:6: note: void CgenNode::emit_dispatch_table(std::ostream&)
+ void CgenNode::emit_dispatch_table(ostream& s) {
+      ^
+cgen.cc:812:6: note:   candidate expects 1 argument, 0 provided
+cgen.cc: In member function ‘virtual void int_const_class::code(std::ostream&)’:
+cgen.cc:973:66: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_load_int(ACC,inttable.lookup_string(token->get_string()),s);
+                                                                  ^
+cgen.cc: In member function ‘virtual void string_const_class::code(std::ostream&)’:
+cgen.cc:978:72: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_load_string(ACC,stringtable.lookup_string(token->get_string()),s);
+                                                                        ^
+cgen.cc: In member function ‘virtual void bool_const_class::code(std::ostream&)’:
+cgen.cc:983:40: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   emit_load_bool(ACC, BoolConst(val), s);
+                                        ^
+In file included from cgen.h:5:0,
+                 from cgen.cc:25:
+/home/prof/renato/cool/student/include/PA5/symtab.h: In instantiation of ‘void SymbolTable<SYM, DAT>::exitscope() [with SYM = Entry*; DAT = CgenNode]’:
+cgen.cc:626:4:   required from here
+/home/prof/renato/cool/student/include/PA5/symtab.h:110:76: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+     fatal_error("exitscope: Can't remove scope from an empty symbol table.");
+                                                                            ^
+/home/prof/renato/cool/student/include/PA5/symtab.h: In instantiation of ‘SymbolTable<SYM, DAT>::ScopeEntry* SymbolTable<SYM, DAT>::addid(SYM, DAT*) [with SYM = Entry*; DAT = CgenNode; SymbolTable<SYM, DAT>::ScopeEntry = SymtabEntry<Entry*, CgenNode>]’:
+cgen.cc:644:3:   required from here
+/home/prof/renato/cool/student/include/PA5/symtab.h:119:81: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+        if (tbl == NULL) fatal_error("addid: Can't add a symbol without a scope.");
+                                                                                 ^
+/home/prof/renato/cool/student/include/PA5/symtab.h: In instantiation of ‘DAT* SymbolTable<SYM, DAT>::probe(SYM) [with SYM = Entry*; DAT = CgenNode]’:
+cgen.cc:760:7:   required from here
+/home/prof/renato/cool/student/include/PA5/symtab.h:146:51: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+     fatal_error("probe: No scope in symbol table.");
+                                                   ^
+make: *** [cgen.o] Error 1

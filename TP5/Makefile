@@ -1,5 +1,5 @@
 
-ASSN = 4
+ASSN = 5
 CLASS= dcc053
 CLASSDIR= /home/prof/renato/cool/student
 LIB= -L/usr/lib -lfl
@@ -7,13 +7,13 @@ AR= ar
 ARCHIVE_NEW= -cr
 RANLIB= ar -qs
 
-SRC= semant.cc semant.h cool-tree.h cool-tree.handcode.h good.cl bad.cl README
-CSRC= semant-phase.cc symtab_example.cc  handle_flags.cc  ast-lex.cc ast-parse.cc utilities.cc stringtab.cc dumptype.cc tree.cc cool-tree.cc
-TSRC= mycoolc mysemant cool-tree.aps
+SRC= cgen.cc cgen.h cgen_supp.cc cool-tree.h cool-tree.handcode.h emit.h example.cl README
+CSRC= cgen-phase.cc utilities.cc stringtab.cc dumptype.cc tree.cc cool-tree.cc ast-lex.cc ast-parse.cc handle_flags.cc 
+TSRC= mycoolc
 CGEN=
-HGEN=
-LIBS= lexer parser cgen
-CFIL= semant.cc ${CSRC} ${CGEN}
+HGEN= 
+LIBS= lexer parser semant
+CFIL= cgen.cc cgen_supp.cc ${CSRC} ${CGEN}
 LSRC= Makefile
 OBJS= ${CFIL:.cc=.o}
 OUTPUT= good.output bad.output
@@ -21,9 +21,9 @@ OUTPUT= good.output bad.output
 
 CPPINCLUDE= -I. -I${CLASSDIR}/include/PA${ASSN} -I${CLASSDIR}/src/PA${ASSN}
 
+
 FFLAGS = -d8 -ocool-lex.cc
 BFLAGS = -d -v -y -b cool --debug -p cool_yy
-ASTBFLAGS = -d -v -y -b ast --debug -p ast_yy
 
 CC=g++
 CFLAGS=-g -Wall -Wno-unused ${CPPINCLUDE} -DDEBUG
@@ -35,35 +35,38 @@ source: ${SRC} ${TSRC} ${LIBS} lsource
 
 lsource: ${LSRC}
 
-${OUTPUT}: semant
-	@rm -f ${OUTPUT}
-	./mysemant good.cl >good.output 2>&1 
-	-./mysemant bad.cl >bad.output 2>&1 
+#
+# if make turnin says "turnin is up to date.", and you want to turnin
+# anyway, you can delete the file 'turnin', and do make turnin again.
+#
+turnin : ${SRC} ${OUTPUT} turnin-clean
+	cd ..; ${CLASSDIR}/bin/turnin ${CLASS} PA${ASSN}
 
-compile:	semant change-prot
+turnin-clean:
+	@rm -f cgen ${OBJS} *.a *.o *~ *.d
+
+${OUTPUT}:	cgen
+	@rm -f ${OUTPUT}
+	./mycoolc  example.cl >example.output 2>&1 
+
+compile:	cgen change-prot
 
 change-prot:
 	@-chmod 660 ${SRC} ${OUTPUT}
 
-SEMANT_OBJS := ${filter-out symtab_example.o,${OBJS}}
-
-semant:  ${SEMANT_OBJS} lexer parser cgen
-	${CC} ${CFLAGS} ${SEMANT_OBJS} ${LIB} -o semant
-
-symtab_example: symtab_example.cc 
-	${CC} ${CFLAGS} symtab_example.cc ${LIB} -o symtab_example
+cgen:	${OBJS} parser semant
+	${CC} ${CFLAGS} ${OBJS} ${LIB} -o cgen
 
 .cc.o:
 	${CC} ${CFLAGS} -c $<
 
-dotest:	semant good.cl bad.cl
-	@echo "\nRunning semantic checker on good.cl\n"
-	-./mysemant good.cl
-	@echo "\nRunning semantic checker on bad.cl\n"
-	-./mysemant bad.cl
+dotest:	cgen example.cl
+	@echo "\nRunning code generator on example.cl\n"
+	-./mycoolc example.cl
 
 ${LIBS}:
 	${CLASSDIR}/etc/link-object ${ASSN} $@
+
 
 # These dependencies allow you to get the starting files for
 # the assignment.  They will not overwrite a file you already have.
@@ -80,11 +83,8 @@ ${TSRC} ${CSRC}:
 ${HSRC}:
 	-ln -s ${CLASSDIR}/include/PA${ASSN}/$@ $@
 
-submit-clean: ${OUTPUT}
-	-rm -f *.s core ${OBJS} ${CGEN} ${HGEN} lexer *~ parser cgen semant symtab_example
-
 clean :
-	-rm -f ${OUTPUT} *.s core ${OBJS} semant cgen symtab_example parser lexer *~ *.a *.o
+	-rm -f ${OUTPUT} *.s core ${OBJS} cgen parser semant lexer *~ *.a *.o
 
 clean-compile:
 	@-rm -f core ${OBJS} ${LSRC}
@@ -93,4 +93,5 @@ clean-compile:
 	${SHELL} -ec '${DEPEND} $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
 
 -include ${CFIL:.cc=.d}
+
 
